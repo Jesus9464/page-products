@@ -2,7 +2,7 @@ import { placeHolder } from "../api/PlaceHolder";
 import { ApiResponse, ParsedDataItem } from "../helpers";
 import { parserData } from "../parser";
 
-export const getTodosApi = async (): Promise<
+export const getProductsApi = async (): Promise<
   ApiResponse<ParsedDataItem[] | null>
 > => {
   try {

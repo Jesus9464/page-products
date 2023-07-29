@@ -1,6 +1,8 @@
 import React, { Dispatch, SetStateAction } from "react";
 import Link from "next/link";
 import { Bars3Icon } from "@heroicons/react/24/outline";
+import { useAppSelector } from "@/common/store/hooks";
+import { productsAddCartSelector } from "@/common/store/selector";
 
 type Props = {
   setMobileMenuOpen: Dispatch<SetStateAction<boolean>>;
@@ -13,15 +15,26 @@ const Desktop: React.FC<Props> = ({
   routeProduct,
   routeShopping,
 }) => {
+  const productsAddCart = useAppSelector(productsAddCartSelector);
+
+  const totalProducts = productsAddCart.length;
+  const totalPrice = productsAddCart.reduce(
+    (total, item) => total + item.price,
+    0
+  );
+
   return (
     <nav
       className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
       aria-label="Global"
     >
       <div className="flex lg:flex-1">
-        <a href="#" className="-m-1.5 p-1.5">
-          <span className="sr-only">Your Company</span>
-        </a>
+        <div className="mt-4 text-center">
+          <p className="text-gray-500 text-sm">
+            Total Products: {totalProducts}
+          </p>
+          <p className="text-gray-500 text-sm">Total Price: {totalPrice}</p>
+        </div>
       </div>
       <div className="flex lg:hidden">
         <button
