@@ -80,14 +80,16 @@ export default function Home() {
                 />
               ))}
           </div>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            handlePrevius={() => setCurrentPage((prev) => prev - 1)}
-            isDisabledPrev={currentPage === 1}
-            handleNext={() => setCurrentPage((prev) => prev + 1)}
-            isDisabledNext={indexOfLastProduct >= filteredProducts.length}
-          />
+          {filteredProducts?.length >= 9 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              handlePrevius={() => setCurrentPage((prev) => prev - 1)}
+              isDisabledPrev={currentPage === 1}
+              handleNext={() => setCurrentPage((prev) => prev + 1)}
+              isDisabledNext={indexOfLastProduct >= filteredProducts.length}
+            />
+          )}
         </div>
       ) : (
         <MessageError message="some unexpected error occurred" />
