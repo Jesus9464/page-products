@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+import { useEffect, useState } from "react";
+
 import { addToCart } from "@/common/store/actions/actions";
 import { getDataThunks } from "@/common/store/actions/thunks";
 import { useAppDispatch, useAppSelector } from "@/common/store/hooks";
@@ -10,7 +12,7 @@ import {
   Pagination,
   Spinner,
 } from "@/components/primitives";
-import { useEffect, useState } from "react";
+import { SortBy } from "@/common/helpers/constanst";
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -19,6 +21,7 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [sortBy, setSortBy] = useState<SortBy | null>(null);
 
   const productsPerPage = 10;
 
@@ -28,10 +31,18 @@ export default function Home() {
   const filteredProducts = products?.filter((item) =>
     item.title.includes(searchTerm)
   );
-  const currentProducts = filteredProducts?.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+
+  const currentProducts = filteredProducts
+    ?.sort((a, b) => {
+      if (sortBy === SortBy.PRICE) {
+        return a.price - b.price;
+      } else if (sortBy === SortBy.RATING) {
+        return b.rating - a.rating;
+      } else {
+        return 0;
+      }
+    })
+    .slice(indexOfFirstProduct, indexOfLastProduct);
 
   const totalPages =
     filteredProducts && Math.ceil(filteredProducts.length / productsPerPage);
@@ -63,13 +74,24 @@ export default function Home() {
     <>
       {products && filteredProducts ? (
         <div className="flex flex-col items-center">
-          <input
-            type="text"
-            placeholder="Search by title"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-md mt-4 w-96"
-          />
+          <div>
+            <input
+              type="text"
+              placeholder="Search by title"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-md mt-4 w-96"
+            />
+            <select
+              value={sortBy || ""}
+              onChange={(e) => setSortBy(e.target.value as SortBy)}
+              className="px-4 py-2 ml-4 border border-gray-300 rounded-md"
+            >
+              <option value="">classification</option>
+              <option value={SortBy.PRICE}>Price</option>
+              <option value={SortBy.RATING}>Rating</option>
+            </select>
+          </div>
           <div className="flex flex-wrap justify-center">
             {currentProducts &&
               currentProducts.map((item) => (
