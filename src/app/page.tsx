@@ -10,32 +10,36 @@ import {
   Pagination,
   Spinner,
 } from "@/components/primitives";
-import { XCircleIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const dispacth = useAppDispatch();
+  const dispatch = useAppDispatch();
   const products = useAppSelector(productsSelector);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const productsPerPage = 10;
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
 
-  const currentProducts = products?.slice(
+  const filteredProducts = products?.filter((item) =>
+    item.title.includes(searchTerm)
+  );
+  const currentProducts = filteredProducts?.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
 
-  const totalPages = products && Math.ceil(products.length / productsPerPage);
+  const totalPages =
+    filteredProducts && Math.ceil(filteredProducts.length / productsPerPage);
 
   const getData = async () => {
     try {
       setLoading(true);
-      const { response, success } = await dispacth(getDataThunks()).unwrap();
+      const { response, success } = await dispatch(getDataThunks()).unwrap();
 
       if (success && response) {
         setLoading(false);
@@ -57,15 +61,22 @@ export default function Home() {
 
   return (
     <>
-      {products ? (
+      {products && filteredProducts ? (
         <div className="flex flex-col items-center">
+          <input
+            type="text"
+            placeholder="Search by title"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded-md mt-4 w-96"
+          />
           <div className="flex flex-wrap justify-center">
             {currentProducts &&
               currentProducts.map((item) => (
                 <Card
                   key={item.id}
                   item={item}
-                  onClick={() => dispacth(addToCart(item))}
+                  onClick={() => dispatch(addToCart(item))}
                 />
               ))}
           </div>
@@ -75,7 +86,7 @@ export default function Home() {
             handlePrevius={() => setCurrentPage((prev) => prev - 1)}
             isDisabledPrev={currentPage === 1}
             handleNext={() => setCurrentPage((prev) => prev + 1)}
-            isDisabledNext={indexOfLastProduct >= products.length}
+            isDisabledNext={indexOfLastProduct >= filteredProducts.length}
           />
         </div>
       ) : (

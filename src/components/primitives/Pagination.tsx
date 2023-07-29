@@ -5,7 +5,7 @@ type Props = {
   handlePrevius: () => void;
   isDisabledPrev: boolean;
   currentPage: string | number;
-  totalPages: string | number | null;
+  totalPages: string | number | null | undefined;
   handleNext: () => void;
   isDisabledNext: boolean;
 };

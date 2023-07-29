@@ -2,7 +2,6 @@
 import { useAppSelector } from "@/common/store/hooks";
 import { productsAddCartSelector } from "@/common/store/selector";
 import { Card, MessageError, Pagination } from "@/components/primitives";
-import { XCircleIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 
 function Pages() {
