@@ -13,6 +13,7 @@ import {
   Spinner,
 } from "@/components/primitives";
 import { SortBy } from "@/common/helpers/constanst";
+import Head from "next/head";
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -72,6 +73,9 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <meta name="description" content="a test page" />
+      </Head>
       {products && filteredProducts ? (
         <div className="flex flex-col items-center">
           <div>
@@ -80,12 +84,12 @@ export default function Home() {
               placeholder="Search by title"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-md mt-4 w-96"
+              className="px-4 py-2 border border-gray-300 rounded-md mt-4 mb-4 mx-4 w-11/12"
             />
             <select
               value={sortBy || ""}
               onChange={(e) => setSortBy(e.target.value as SortBy)}
-              className="px-4 py-2 ml-4 border border-gray-300 rounded-md"
+              className="px-4 py-2 ml-4 border border-gray-300 rounded-md w-11/12"
             >
               <option value="">classification</option>
               <option value={SortBy.PRICE}>Price</option>

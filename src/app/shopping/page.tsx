@@ -2,6 +2,7 @@
 import { useAppSelector } from "@/common/store/hooks";
 import { productsAddCartSelector } from "@/common/store/selector";
 import { Card, MessageError, Pagination } from "@/components/primitives";
+import Head from "next/head";
 import React, { useState } from "react";
 
 function Pages() {
@@ -24,6 +25,9 @@ function Pages() {
 
   return (
     <>
+      <Head>
+        <meta name="description" content="a test page" />
+      </Head>
       {productsAddCart.length > 0 ? (
         <div className="flex flex-col items-center">
           <div className="flex flex-wrap justify-center">
