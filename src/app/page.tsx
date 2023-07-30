@@ -30,7 +30,7 @@ export default function Home() {
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
 
   const filteredProducts = products?.filter((item) =>
-    item.title.includes(searchTerm)
+    item.title.toLowerCase().includes(searchTerm)
   );
 
   const currentProducts = filteredProducts
@@ -83,7 +83,7 @@ export default function Home() {
               type="text"
               placeholder="Search by title"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
               className="px-4 py-2 border border-gray-300 rounded-md mt-4 mb-4 mx-4 w-11/12"
             />
             <select
